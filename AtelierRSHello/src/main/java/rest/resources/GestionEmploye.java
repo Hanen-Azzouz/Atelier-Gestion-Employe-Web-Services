@@ -32,37 +32,32 @@ public class GestionEmploye {
 	
 	
 	public GestionEmploye() {
-		employees.add(new Employe("123456"," Ali", "Mohammed"));
+		employees.add(new Employe("11"," Ali", "Mohammed"));
+		employees.add(new Employe("12", "Ben Ahmed", "Amine"));
 	}
 	
 	// Fonction Afficher
 	@GET
-	@Produces(MediaType.TEXT_PLAIN)
-	@ApiOperation(value="Get All Employes")
+	@Produces(MediaType.APPLICATION_JSON)
+	@ApiOperation(value="Get All Employes",produces = MediaType.APPLICATION_JSON)
 	 @ApiResponses({
 		 @ApiResponse(code=200, message="Success")
 		 })
-	
-	//@Produces(MediaType.APPLICATION_XML)(à utiliser avec postman )
-	
+		
 	//@Path("test")
 	//on a utilisé Response car on a 2 types de retour
 	public Response displayEmployeesList(){
 		
 		if(employees.size()!=0) {
-			//GenericEntity<List<Employe>> malist =new GenericEntity<List<Employe>>(employees){};
-		return Response.status(Status.ACCEPTED).entity(employees).build();}
+			GenericEntity<List<Employe>> malist =new GenericEntity<List<Employe>>(employees){};
+		return Response.status(Status.ACCEPTED).entity(malist).build();}
 		else
-			return Response.status(Status.NOT_FOUND).entity(" ").build();
+			return Response.status(Status.NOT_FOUND).entity("La liste est vide ").build();
 		
 	}
 	// Fonction Ajouter
-	@POST
-	
-	@Consumes(MediaType.APPLICATION_JSON)
-	//@Consumes(MediaType.TEXT_PLAIN)
-	
-	//@Consumes(MediaType.APPLICATION_XML)
+	@POST	
+	@Consumes(MediaType.APPLICATION_JSON)	
 	public Response addEmploye(Employe e) {
 		
 		
@@ -76,7 +71,7 @@ public class GestionEmploye {
 	@PUT
 	//@Consumes(MediaType.TEXT_PLAIN)
 	
-	@Consumes(MediaType.APPLICATION_XML)
+	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateEmploye(Employe e) {
 		
 	for(Employe emp:employees) {
@@ -98,8 +93,6 @@ public class GestionEmploye {
 	//Fonction Recherche par CIN
 	@GET
 	@Produces(MediaType.APPLICATION_XML)
-	//@Produces(MediaType.TEXT_PLAIN)
-	
 	@Path("{cin}")
 	
 	public Response searchEmployeByCIN(@PathParam("cin") String cin) {
@@ -122,8 +115,7 @@ public class GestionEmploye {
 	}
 	// Fonction Supprimer par CIN
 	
-	@DELETE
-	
+	@DELETE	
 	@Path("{cin}")
 	public Response deleteEmploye(@PathParam("cin") String cin) {
 		
